@@ -67,10 +67,15 @@ public class FilterFragment extends DialogFragment {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 String m = Integer.toString(monthOfYear + 1);
+                                String d = Integer.toString(dayOfMonth);
+
                                 if (m.length() == 1)
                                     m = "0" + m;
 
-                                etBeginDate.setText(year + "" + m + "" + dayOfMonth);
+                                if (d.length() == 1)
+                                    d = "0" + d;
+
+                                etBeginDate.setText(year + "" + m + "" + d);
                             }
                         }, mYear, mMonth, mDay);
 
