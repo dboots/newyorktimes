@@ -12,16 +12,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.donboots.newyorktimes.R;
 import com.donboots.newyorktimes.adapters.ArticleArrayAdapter;
 import com.donboots.newyorktimes.models.Article;
 import com.donboots.newyorktimes.models.FilterSettings;
+import com.donboots.newyorktimes.EndlessScrollListener;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -31,23 +34,25 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.HashMap;
 
 import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends AppCompatActivity implements FilterFragment.FilterDialogListener {
     GridView gvResults;
+    ScrollView scrollView;
     ArrayList<Article> articles;
     ArticleArrayAdapter adapter;
     FilterFragment filterFragment;
     FragmentManager fm;
     FilterSettings filterSettings = new FilterSettings();
     String query;
+    int current_page = 0;
 
     @Override
     public void onFinishEditDialog(FilterSettings fs) {
         filterSettings = fs;
-        onArticleSearch(query);
+        onArticleSearch(query, false);
     }
 
     @Override
@@ -55,8 +60,15 @@ public class MainActivity extends AppCompatActivity implements FilterFragment.Fi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        filterSettings.setBeginDate("01/01/2016");
+        filterSettings.setBeginDate("20160101");
         filterSettings.setSortOrder("Newest");
+
+        HashMap<String, Boolean> map = new HashMap<String, Boolean>();
+        map.put("Arts", true);
+        map.put("Fashion & Beauty", true);
+        map.put("Sports", true);
+
+        filterSettings.setNewsDesks(map);
 
         fm = getSupportFragmentManager();
 
@@ -82,22 +94,35 @@ public class MainActivity extends AppCompatActivity implements FilterFragment.Fi
                 startActivity(i);
             }
         });
+
+        gvResults.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public boolean onLoadMore(int page, int totalItemsCount) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to your AdapterView
+                onArticleSearch(query, true);
+                // or customLoadMoreDataFromApi(totalItemsCount);
+                return true; // ONLY if more data is actually being loaded; false otherwise.
+            }
+        });
     }
 
-    public void onArticleSearch(String query) {
+    public void onArticleSearch(String query, boolean append) {
         AsyncHttpClient client = new AsyncHttpClient();
         String url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
         RequestParams params = new RequestParams();
 
         params.put("api-key", "64b65865710f4387b29a51b0f6d19592");
-        params.put("page", 0);
+        params.put("page", current_page);
         params.put("q", query);
 
         params.put("sort", filterSettings.getSortOrder());
         params.put("begin_date", filterSettings.getBeginDate());
         params.put("fq", filterSettings.getNewsDesks());
 
-        articles.clear();
+        current_page++;
+        if (!append)
+            articles.clear();
 
         client.get(url, params, new JsonHttpResponseHandler() {
             @Override
@@ -111,6 +136,13 @@ public class MainActivity extends AppCompatActivity implements FilterFragment.Fi
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                Log.d("Failed: ", ""+statusCode);
+                Log.d("Error : ", "" + throwable);
             }
         });
     }
@@ -149,7 +181,8 @@ public class MainActivity extends AppCompatActivity implements FilterFragment.Fi
                 searchView.clearFocus();
 
                 query = submitQuery;
-                onArticleSearch(query);
+                onArticleSearch(query, false);
+                onArticleSearch(query, true);
 
                 return true;
             }

@@ -30,7 +30,9 @@ import java.util.HashMap;
 public class FilterFragment extends DialogFragment {
     EditText etBeginDate;
     Button btnSave;
-    CheckBox cbEducation;
+    CheckBox cbArts;
+    CheckBox cbFashion;
+    CheckBox cbSports;
     Spinner spinnerSortOrder;
     private int mYear, mMonth, mDay;
 
@@ -44,7 +46,9 @@ public class FilterFragment extends DialogFragment {
 
         etBeginDate = (EditText) view.findViewById(R.id.etBeginDate);
         btnSave = (Button) view.findViewById(R.id.btnSave);
-        cbEducation = (CheckBox) view.findViewById(R.id.cbEducation);
+        cbArts = (CheckBox) view.findViewById(R.id.cbArts);
+        cbFashion = (CheckBox) view.findViewById(R.id.cbFashion);
+        cbSports = (CheckBox) view.findViewById(R.id.cbSports);
         spinnerSortOrder = (Spinner) view.findViewById(R.id.spinnerSortOrder);
 
         etBeginDate.setOnClickListener(new View.OnClickListener() {
@@ -61,9 +65,7 @@ public class FilterFragment extends DialogFragment {
                 DatePickerDialog dpd = new DatePickerDialog(getContext(),
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
-                                // Display Selected date in textbox
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 String m = Integer.toString(monthOfYear + 1);
                                 if (m.length() == 1)
                                     m = "0" + m;
@@ -80,7 +82,9 @@ public class FilterFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 HashMap<String, Boolean> map = new HashMap<String, Boolean>();
-                map.put("Education", cbEducation.isChecked());
+                map.put("Arts", cbArts.isChecked());
+                map.put("Fashion & Style", cbFashion.isChecked());
+                map.put("Sports", cbSports.isChecked());
 
                 FilterSettings fs = new FilterSettings();
                 fs.setBeginDate(etBeginDate.getText().toString());

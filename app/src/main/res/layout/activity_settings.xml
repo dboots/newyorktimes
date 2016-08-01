@@ -64,23 +64,23 @@
             <CheckBox
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Education"
-                android:id="@+id/cbEducation"
+                android:text="Arts"
+                android:id="@+id/cbArts"
                 android:layout_gravity="center_vertical"
                 android:checked="true" />
 
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Science"
-                android:id="@+id/cbScience"
+                android:text="Fashion &amp; Beauty"
+                android:id="@+id/cbFashion"
                 android:checked="true" />
 
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Business"
-                android:id="@+id/cbBusiness"
+                android:text="Sports"
+                android:id="@+id/cbSports"
                 android:checked="true" />
         </LinearLayout>
 
