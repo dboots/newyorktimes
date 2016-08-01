@@ -61,10 +61,13 @@ public class FilterFragment extends DialogFragment {
                 final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
 
-                final Calendar c = Calendar.getInstance();
-                mYear = c.get(Calendar.YEAR);
-                mMonth = c.get(Calendar.MONTH);
-                mDay = c.get(Calendar.DAY_OF_MONTH);
+                String current = etBeginDate.getText().toString();
+                mYear = Integer.parseInt(current.substring(0, 4));
+                mMonth = Integer.parseInt(current.substring(4, 6)) - 1;
+                mDay = Integer.parseInt(current.substring(6, 8));
+
+
+                Log.d("DATE", mYear + "" + mMonth + "" + mDay);
 
                 DatePickerDialog dpd = new DatePickerDialog(getContext(),
                         new DatePickerDialog.OnDateSetListener() {
