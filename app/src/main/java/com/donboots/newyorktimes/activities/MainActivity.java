@@ -120,6 +120,8 @@ public class MainActivity extends AppCompatActivity implements FilterFragment.Fi
         params.put("begin_date", filterSettings.getBeginDate());
         params.put("fq", filterSettings.getNewsDesks());
 
+        Toast.makeText(this, "Searching for " + query + " starting from " + filterSettings.getBeginDate() + " sorting by " + filterSettings.getSortOrder(), Toast.LENGTH_LONG).show();
+
         current_page++;
         if (!append)
             articles.clear();
