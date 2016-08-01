@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">New York Times</string>
+    <string name="search">Search</string>
+    <string name="query">Enter Search Query</string>
+    <string name="begin_date">Begin Date</string>
+    <string name="sort_order">Sort Order</string>
+    <string name="news_desk_values">News Desk Values</string>
+    <string name="save">Save</string>
+
+    <string-array name="sort_arrays">
+        <item>Oldest</item>
+        <item>Newest</item>
+    </string-array>
 </resources>

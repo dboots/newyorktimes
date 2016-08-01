@@ -7,7 +7,7 @@ import org.json.JSONException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Article implements Serializable{
+public class Article implements Serializable {
     String webUrl;
     String headline;
     String thumbnail;
