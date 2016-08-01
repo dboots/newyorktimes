@@ -44,12 +44,16 @@ public class FilterFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.activity_settings, container);
 
+        String begindate = getArguments().getString("begindate");
+
         etBeginDate = (EditText) view.findViewById(R.id.etBeginDate);
         btnSave = (Button) view.findViewById(R.id.btnSave);
         cbArts = (CheckBox) view.findViewById(R.id.cbArts);
         cbFashion = (CheckBox) view.findViewById(R.id.cbFashion);
         cbSports = (CheckBox) view.findViewById(R.id.cbSports);
         spinnerSortOrder = (Spinner) view.findViewById(R.id.spinnerSortOrder);
+
+        etBeginDate.setText(begindate);
 
         etBeginDate.setOnClickListener(new View.OnClickListener() {
             @Override
