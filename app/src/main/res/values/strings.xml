@@ -8,7 +8,7 @@
     <string name="save">Save</string>
 
     <string-array name="sort_arrays">
-        <item>Oldest</item>
-        <item>Newest</item>
+        <item>oldest</item>
+        <item>newest</item>
     </string-array>
 </resources>

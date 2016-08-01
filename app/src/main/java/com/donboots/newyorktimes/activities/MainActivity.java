@@ -201,6 +201,8 @@ public class MainActivity extends AppCompatActivity implements FilterFragment.Fi
     public void menuSettings(MenuItem item) {
         Bundle bundle = new Bundle();
         bundle.putString("begindate", filterSettings.getBeginDate());
+        bundle.putString("sort", filterSettings.getSortOrder());
+
         filterFragment = new FilterFragment();
         filterFragment.setArguments(bundle);
         filterFragment.show(fm, "activity_settings");

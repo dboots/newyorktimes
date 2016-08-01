@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -45,6 +46,7 @@ public class FilterFragment extends DialogFragment {
         final View view = inflater.inflate(R.layout.activity_settings, container);
 
         String begindate = getArguments().getString("begindate");
+        String sort = getArguments().getString("sort");
 
         etBeginDate = (EditText) view.findViewById(R.id.etBeginDate);
         btnSave = (Button) view.findViewById(R.id.btnSave);
@@ -53,6 +55,13 @@ public class FilterFragment extends DialogFragment {
         cbSports = (CheckBox) view.findViewById(R.id.cbSports);
         spinnerSortOrder = (Spinner) view.findViewById(R.id.spinnerSortOrder);
 
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(view.getContext(), R.array.sort_arrays, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSortOrder.setAdapter(adapter);
+        if (!sort.equals(null)) {
+            int spinnerPosition = adapter.getPosition(sort);
+            spinnerSortOrder.setSelection(spinnerPosition);
+        }
         etBeginDate.setText(begindate);
 
         etBeginDate.setOnClickListener(new View.OnClickListener() {
@@ -65,9 +74,6 @@ public class FilterFragment extends DialogFragment {
                 mYear = Integer.parseInt(current.substring(0, 4));
                 mMonth = Integer.parseInt(current.substring(4, 6)) - 1;
                 mDay = Integer.parseInt(current.substring(6, 8));
-
-
-                Log.d("DATE", mYear + "" + mMonth + "" + mDay);
 
                 DatePickerDialog dpd = new DatePickerDialog(getContext(),
                         new DatePickerDialog.OnDateSetListener() {
